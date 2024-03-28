@@ -1,89 +1,115 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>여비 자동화</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script
-      lang="javascript"
-      src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"
-    ></script>
-  </head>
-  <body>
-    <div id="info-modal" class="modal">
-      <div id="info-form">
-        <p id="info-form-title">출장여비 내역서 자동화</p>
-        <p id="info-form-desc">아래의 사항을 입력해주세요</p>
-        <div class="info-form-item">
-          <label for="degree">직급</label>
-          <input id="degree" class="info-form-input" placeholder="예)행정 8급" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>여비 자동화</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script
+            lang="javascript"
+            src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"
+        ></script>
+    </head>
+    <body>
+        <div id="info-modal" class="modal">
+            <div id="info-form">
+                <p id="info-form-title">출장여비 내역서 자동화</p>
+                <p id="info-form-desc">아래의 사항을 입력해주세요</p>
+                <div class="info-form-item">
+                    <label for="degree">직급</label>
+                    <input
+                        id="degree"
+                        class="info-form-input"
+                        placeholder="예)행정 8급"
+                    />
+                </div>
+                <div class="info-form-item">
+                    <label for="name">성명</label>
+                    <input
+                        id="name"
+                        class="info-form-input"
+                        placeholder="예)정기명"
+                    />
+                </div>
+                <div class="info-form-item">
+                    <label for="team">팀명</label>
+                    <input
+                        id="team"
+                        class="info-form-input"
+                        placeholder="예)총무팀"
+                    />
+                </div>
+                <div class="info-form-item">
+                    <label>관용차량 존재 여부</label>
+                    <div class="info-form-radios">
+                        <input
+                            type="radio"
+                            name="public-car"
+                            id="car-true"
+                            checked
+                        />
+                        <input type="radio" name="public-car" id="car-false" />
+                        <label for="car-true">있음</label>
+                        <label for="car-false">없음</label>
+                    </div>
+                </div>
+                <button id="info-submit">입력</button>
+                <p style="margin-top: 8px">입력하셔야만 이용이 가능합니다</p>
+                <p>또한 입력된 정보는 수집되지않습니다</p>
+            </div>
         </div>
-        <div class="info-form-item">
-          <label for="name">성명</label>
-          <input id="name" class="info-form-input" placeholder="예)정기명" />
-        </div>
-        <div class="info-form-item">
-          <label for="team">팀명</label>
-          <input id="team" class="info-form-input" placeholder="예)총무팀" />
-        </div>
-        <div class="info-form-item">
-          <label>관용차량 존재 여부</label>
-          <div class="info-form-radios">
-            <input type="radio" name="public-car" id="car-true" checked />
-            <input type="radio" name="public-car" id="car-false" />
-            <label for="car-true">있음</label>
-            <label for="car-false">없음</label>
-          </div>
-        </div>
-        <button id="info-submit">입력</button>
-        <p style="margin-top: 8px">입력하셔야만 이용이 가능합니다</p>
-        <p>또한 입력된 정보는 수집되지않습니다</p>
-      </div>
-    </div>
 
-    <header>
-      <div id="header-container">
-        <h1>출장여비 자동화</h1>
-        <nav id="header-buttons">
-          <span id="setting-btn">설정</span>
-        </nav>
-      </div>
-    </header>
-    <section>
-      <h2 id="document-title"></h2>
-      <table>
-        <thead></thead>
-        <tbody></tbody>
-      </table>
-      <p id="checker"></p>
-      <div id="controller">
-        <div id="controller-title-part">
-          <p id="controller-title">직원별 정보입력 및 순서조정</p>
-          <span id="person-info-revise-btn">수정</span>
+        <header>
+            <div id="header-container">
+                <h1>출장여비 자동화</h1>
+                <nav id="header-buttons">
+                    <span id="setting-btn">설정</span>
+                </nav>
+            </div>
+        </header>
+        <section>
+            <h2 id="document-title"></h2>
+            <table>
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+            <p id="checker"></p>
+            <div id="controller">
+                <div id="controller-title-part">
+                    <p id="controller-title">직원별 정보입력 및 순서조정</p>
+                    <span id="person-info-revise-btn">수정</span>
+                </div>
+                <div id="person-info-container">
+                    <div id="person-info-header">
+                        <div id="person-name" class="col-name">이름</div>
+                        <div id="person-degree" class="col-degree">직급</div>
+                        <div id="person-bank" class="col-bank">은행</div>
+                        <div id="person-account" class="col-account">계좌</div>
+                        <div id="person-workdate" class="col-workdate">
+                            출장일
+                        </div>
+                        <div id="person-util" class="col-util">순서조정</div>
+                    </div>
+                    <div id="person-info-body"></div>
+                </div>
+            </div>
+        </section>
+        <div id="util-btns">
+            <label class="util-btn" id="excel" for="excel-input"
+                >엑셀넣기</label
+            >
+            <div class="util-btn" id="print">프린트</div>
+            <div class="util-btn" id="prev">이전달</div>
+            <div class="util-btn" id="next">다음달</div>
         </div>
-        <div id="person-info-container">
-          <div id="person-info-header">
-            <div id="person-name" class="col-name">이름</div>
-            <div id="person-degree" class="col-degree">직급</div>
-            <div id="person-bank" class="col-bank">은행</div>
-            <div id="person-account" class="col-account">계좌</div>
-            <div id="person-workdate" class="col-workdate">출장일</div>
-            <div id="person-util" class="col-util">순서조정</div>
-          </div>
-          <div id="person-info-body">
-          </div>
-        </div>
-      </div>
-      <div id="util-btns">
-        <label class="util-btn" id="excel" for="excel-input">엑셀넣기</label>
-        <div class="util-btn" id="print">프린트</div>
-        <div class="util-btn" id="prev">이전달</div>
-        <div class="util-btn" id="next">다음달</div>
-      </div>
-    </section>
-    <input type="file" id="excel-input" multiple style="display: none" accept=".xls,.xlsx" />
-    <script src="./index.js"></script>
-  </body>
+        <input
+            type="file"
+            id="excel-input"
+            multiple
+            style="display: none"
+            accept=".xls,.xlsx"
+        />
+        <script src="./index.js"></script>
+    </body>
 </html>
