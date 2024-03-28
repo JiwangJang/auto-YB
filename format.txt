@@ -1,0 +1,51 @@
+            <div class="person-info-item">
+              <div class="col-name">장지왕</div>
+              <div class="col-degree">공업9급</div>
+              <div class="col-bank">농협</div>
+              <div class="col-account">120120-101201-3032</div>
+              <div class="col-workdate">
+                <div class="workdate">3</div>
+                <div class="workdate">3</div>
+              </div>
+              <div class="col-util">
+                <div class="order-up"></div>
+                <div class="order-down"></div>
+                <div class="order-delete"></div>
+              </div>
+            </div>
+            순서조정표 양식
+
+            <div class="person-info-item">
+              <div class="col-name">장지왕</div>
+              <div class="col-degree"><input type="text" class="degree-input" /></div>
+              <div class="col-bank"><input type="text" class="bank-input" /></div>
+              <div class="col-account"><input type="text" class="account-input" /></div>
+              <div class="col-workdate">
+                <div class="workdate">3</div>
+                <div class="workdate">3</div>
+              </div>
+              <div class="col-util">
+                <div class="order-up"></div>
+                <div class="order-down"></div>
+                <div class="order-delete"></div>
+              </div>
+            </div>
+            순서조정표 양식(수정시)
+
+
+
+                    `
+        <div class="person-info-item">
+            <div class="col-name">장지왕</div>
+            <div class="col-degree">공업9급</div>
+            <div class="col-bank">농협</div>
+            <div class="col-account">120120-101201-3032</div>
+            <div class="col-workdate">
+            </div>
+            <div class="col-util">
+            <div class="order-up"></div>
+            <div class="order-down"></div>
+            <div class="order-delete"></div>
+            </div>
+        </div>
+      `

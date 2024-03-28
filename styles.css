@@ -1,0 +1,438 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Pretendard;
+}
+
+@font-face {
+  font-family: Pretendard;
+  src: url(./fonts/Pretendard-Black.otf);
+  font-weight: 900;
+}
+@font-face {
+  font-family: Pretendard;
+  src: url(./fonts/Pretendard-Bold.otf);
+  font-weight: 700;
+}
+@font-face {
+  font-family: Pretendard;
+  src: url(./fonts/Pretendard-Regular.otf);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border : 3px solid black
+}
+
+th,
+tr,
+td {
+  padding: 4px;
+  border: 1px solid black;
+}
+
+.trip-date-count,
+.trip-price{
+  text-align: center;
+  width: 6%;
+}
+
+.time-vary{
+  width: 7%;
+}
+
+.degree,
+.worker-name,
+.account,
+.total-money{
+  text-align: center;
+}
+
+.account{
+  width: 15%;
+}
+
+.total-money{
+  width: 5%;
+}
+
+.small-total,
+.total-sum-money{
+  text-align: right;
+}
+.total-sum-money{
+  padding-right: 12px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+#checker{
+  font-size: 24px;
+  text-align: center;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#info-form {
+  min-width: 400px;
+  background-color: rgb(237 237 237);
+  padding: 24px 24px;
+  border-radius: 10px;
+}
+
+#info-form-title {
+  font-size: 36px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+#info-form-desc {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.info-form-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.info-form-item > label {
+  font-size: 18px;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.info-form-input {
+  border: none;
+  outline: none;
+  height: 50px;
+  width: 100%;
+  padding-left: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.info-form-radios {
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.info-form-radios label {
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  position: relative;
+  background-color: rgb(255 146 0);
+  height: 50px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.3;
+}
+
+input[id="car-true"]:checked ~ label[for="car-true"] {
+  opacity: 1;
+}
+input[id="car-false"]:checked ~ label[for="car-false"] {
+  opacity: 1;
+}
+
+button {
+  position: relative;
+  border: none;
+  background-color: rgb(0, 136, 255);
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  overflow: hidden;
+}
+
+button::after {
+  transition: all 0.2s;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+button:hover::after {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+header {
+  height: 80px;
+  border-bottom: 1px solid #d9d9d9;
+  display: flex;
+  align-items: center;
+}
+
+#header-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#header-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  height: auto;
+}
+
+#header-buttons span,
+#person-info-revise-btn {
+  flex-grow: 0;
+  background-color: #bfdfff;
+  padding: 4px 12px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 9999px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+#header-buttons span:hover,
+#person-info-revise-btn:hover{
+  background-color: #8bc5ff;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 900;
+}
+
+section {
+  height: calc(100vh - 80px);
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+#util-btns {
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.util-btn {
+  font-weight: 700;
+  font-size: 18px;
+  border-radius: 9999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  position: relative;
+  background-color: antiquewhite;
+}
+
+.util-btn:hover::after {
+  opacity: 0;
+}
+
+.util-btn::after {
+  border-radius: 9999px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 30%;
+  transition: 0.1s all ease-in-out;
+}
+
+#document-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  padding: 12px 0px;
+}
+
+
+#controller{
+  margin-top: 20px;
+  padding-bottom: 100px;
+
+}
+
+#controller-title{
+  font-size: 32px;
+  font-weight: 700;
+}
+
+#controller-title-part{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#person-info-container{
+  background-color: #e4f1ff;
+  padding: 24px;
+  border-radius: 10px;
+  margin-top: 12px;
+}
+
+#person-info-header{
+  display: flex;
+  background-color: #64b1ff;
+  border-radius: 10px;
+  margin-bottom: 12px
+}
+
+#person-info-header div{
+  text-align: center;
+  padding: 12px;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+#person-info-body{
+  background-color: #bfdfff;
+  border-radius: 10px;
+}
+
+.person-info-item{
+  display: flex;
+}
+
+.person-info-item:not(.person-info-item:first-child){
+  border-top: 1px solid rgb(220, 239, 254);
+}
+
+.person-info-item > div{
+  text-align: center;
+  padding: 12px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.person-info-item input{
+  width: 100%;
+  border: none;
+  height: 100%;
+  outline: none;
+  padding: 0px 8px;
+  font-size : 18px
+}
+
+#person-info-body .col-workdate{
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.workdate{
+  width: 36px;
+  height: 36px;
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-name,
+.col-degree,
+.col-bank,
+.col-account,
+.col-workdate{
+  flex: 1;
+  border-right: 1px solid rgb(220, 239, 254);
+}
+
+.col-workdate{
+  flex: 3;
+}
+.col-util{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.col-util div,
+.workdate{
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: #89c3ff;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor : pointer;
+  overflow : hidden;
+}
+
+.col-util div::after,
+.workdate::after{
+  transition: all 0.3s;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0;
+}
+
+.col-util div:hover::after,
+.workdate:hover::after{
+  opacity: 0.2;
+}
+
+.order-up{
+  background-image: url(./svg/upward_arrow.svg);
+}
+.order-down{
+  background-image: url(./svg/downward_arrow.svg);
+}
+.order-delete{
+  background-image: url(./svg/delete.svg);
+}
