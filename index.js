@@ -52,6 +52,10 @@ document.querySelector("#team").addEventListener("keydown", (e) => {
     }
 });
 
+function ignore(){
+    console.log('무시')
+}
+
 function commaGenerator(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -173,7 +177,7 @@ function render() {
                     ? "-"
                     : commaGenerator(up240AndUseCarMoney)
             }</td>
-            <td rowspan="3" class="account">${account.split(' ')[0]} <br/>${account.split(' ')[1]}</td>
+            <td rowspan="3" class="account">${account ? `${account.split(' ')[0]} <br/>${account.split(' ')[1]}` : ""}</td>
             <td rowspan="3" class="total-money">${commaGenerator(
                 down240Money + up240Money + up240AndUseCarMoney
             )}</td>
@@ -260,7 +264,7 @@ function render() {
             ${totalArr
                 .map(
                     ({ date, isUp240, isUseCar }) =>
-                        `<div class="workdate" data-date=${date} data-isUp240=${isUp240} data-isUseCar=${isUseCar}>${date}</div>`
+                        `<div class="workdate" onclick="ignore()" data-date=${date} data-isUp240=${isUp240} data-isUseCar=${isUseCar}>${date}</div>`
                 )
                 .join("")}
             </div>
