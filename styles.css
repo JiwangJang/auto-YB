@@ -520,6 +520,28 @@ section {
     background-image: url(./svg/delete.svg);
 }
 
+circle {
+    stroke-dashoffset: 402;
+    stroke-dasharray: 402;
+    animation: loading 3s ease-in-out infinite;
+}
+
+#loading-container {
+    animation: rotate 5s ease-out infinite;
+}
+
+@keyframes loading {
+    to {
+        stroke-dashoffset: -402;
+    }
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(720deg);
+    }
+}
+
 @media print {
     header,
     #controller,

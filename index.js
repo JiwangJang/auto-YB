@@ -157,6 +157,7 @@ function render() {
             `;
         } else {
             const dataIndex = renderData.findIndex((item) => item.worker === worker);
+            if (dataIndex === -1) return;
             const target = renderData[dataIndex].tripData;
             const up240AndUseCar = [];
             const up240 = [];
@@ -305,24 +306,23 @@ function readExcel(file) {
 
             if (json[0].__EMPTY_8.replace(/\s/g, "") !== "출장내역서") reject("formatError");
 
-            for (let i = json.length - 2; i > 1; i--) {
-                const data = json[i];
-                if (i === json.length - 2) result.worker = data.__EMPTY_13;
-                const { __EMPTY_3: start, __EMPTY_4: end, __EMPTY_9: publicCar } = data;
+            json.forEach((item, i) => {
+                if (item.__EMPTY_1 !== "관내") return;
+                if (i === 2) result.worker = item.__EMPTY_13;
+                const { __EMPTY_3: start, __EMPTY_4: end, __EMPTY_9: publicCar } = item;
                 const startDate = new Date(start);
                 if (startDate.getMonth() !== month || startDate.getFullYear() !== year) reject("notMatch");
 
                 const period = new Date(end).getTime() - startDate.getTime();
                 const minutePeriod = period / (1000 * 60);
-                if (publicCar === "사용" && minutePeriod < 240) {
-                    continue;
-                }
+                console.log(start, end, minutePeriod, publicCar);
+                if (publicCar === "사용" && minutePeriod < 240) return;
                 const prev = result.tripData[result.tripData.length - 1];
 
-                if (i !== json.length - 2 && prev.date === startDate.getDate()) {
+                if (prev && prev.date === startDate.getDate()) {
                     const isUp240 = minutePeriod >= 240 ? true : false;
                     const isUseCar = publicCar === "사용" ? true : false;
-                    if (prev.trip.length > 2 || (prev.trip[0].isUp240 && !prev.trip[0].isUseCar)) continue;
+                    if (prev.trip.length > 2 || (prev.trip[0].isUp240 && !prev.trip[0].isUseCar)) return;
                     if (isUp240 && !isUseCar) {
                         prev.trip = [
                             {
@@ -344,7 +344,7 @@ function readExcel(file) {
                         ],
                     });
                 }
-            }
+            });
             resolve(result);
         };
     });
@@ -403,23 +403,23 @@ document.querySelector("#excel-input").addEventListener("input", async (e) => {
         const fileDatas = await Promise.all(promiseArr);
         const originData = getRenderData() ?? [];
         const originOrder = getOrder() ?? [];
-
         fileDatas.forEach((data) => {
-            const originIndex = originData.findIndex((item) => item.worker === data.worker);
+            const originDataIndex = originData.findIndex((item) => item.worker === data.worker);
+            const originOrderIndex = originOrder.findIndex((item) => item.worker === data.worker);
 
-            if (originIndex == -1) {
+            if (originDataIndex == -1) {
                 originData.push(data);
-                originOrder.push({
-                    worker: data.worker,
-                    account: "",
-                    degree: "",
-                });
+                if (originOrderIndex == -1)
+                    originOrder.push({
+                        worker: data.worker,
+                        account: "",
+                        degree: "",
+                    });
             } else {
-                originData.splice(originIndex, 1);
+                originData.splice(originDataIndex, 1);
                 originData.push(data);
             }
         });
-
         localStorage.setItem("order", JSON.stringify(originOrder));
         setRenderData(originData);
         render();
@@ -436,6 +436,8 @@ document.querySelector("#person-info-revise-btn").addEventListener("click", (e) 
     const order = getOrder();
     const renderData = getRenderData();
     const personInfoBody = document.querySelector("#person-info-body");
+
+    if (order.length === 0) return alert("직원부터 등록하세요");
 
     if (e.target.innerText === "저장") {
         e.target.innerText = "수정";
@@ -454,6 +456,7 @@ document.querySelector("#person-info-revise-btn").addEventListener("click", (e) 
         personInfoBody.innerHTML = "";
         order.forEach((orderData) => {
             const infoData = personInfoItems.filter((item) => item.name === orderData.worker)[0];
+            if (!infoData) return;
             orderData.account = `${infoData.bank} ${infoData.account}`;
             orderData.degree = infoData.degree;
         });
@@ -469,6 +472,7 @@ document.querySelector("#person-info-revise-btn").addEventListener("click", (e) 
         personInfoBody.innerHTML = "";
         order.forEach(({ worker, account, degree }) => {
             const dataIndex = renderData.findIndex((item) => item.worker === worker);
+            if (dataIndex === -1) return;
             const target = renderData[dataIndex].tripData;
             const totalArr = [];
 
@@ -592,6 +596,10 @@ document.querySelector("#setting-form").addEventListener("click", (e) => {
             document.querySelector("#setting-modal").classList.remove("active");
             break;
     }
+});
+
+window.addEventListener("load", () => {
+    document.querySelector("#loading").style.display = "none";
 });
 
 render();
