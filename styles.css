@@ -33,6 +33,28 @@ td {
     border: 1px solid black;
 }
 
+tbody tr:first-child {
+    border-top: 2px solid black;
+}
+
+tbody tr:nth-child(3n) {
+    border-bottom: 2px solid black;
+}
+
+#table-degree-header,
+#table-name-header,
+#table-public-car-header {
+    width: 70px;
+}
+
+#table-account-header {
+    width: 15%;
+}
+
+#table-total-header {
+    width: 5%;
+}
+
 .trip-date-count,
 .trip-price {
     text-align: center;
@@ -40,7 +62,7 @@ td {
 }
 
 .time-vary {
-    width: 7%;
+    width: 100px;
 }
 
 .degree,
@@ -48,14 +70,6 @@ td {
 .account,
 .total-money {
     text-align: center;
-}
-
-.account {
-    width: 15%;
-}
-
-.total-money {
-    width: 5%;
 }
 
 .small-total,
@@ -79,26 +93,54 @@ td {
     z-index: 5;
 }
 
+#setting-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+#setting-modal.active {
+    display: flex;
+}
+
+#setting-modal button {
+    height: 45px;
+}
+
 #checker {
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
-    height: 60px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#info-form {
+#info-form,
+#setting-form {
     min-width: 400px;
     background-color: rgb(237 237 237);
     padding: 24px 24px;
     border-radius: 10px;
 }
 
-#info-form-title {
+#info-form-title,
+#setting-form-title {
     font-size: 36px;
     font-weight: 900;
     margin-bottom: 4px;
+}
+
+#setting-submit,
+#setting-reset {
+    margin-bottom: 4px;
+}
+
+#setting-reset {
+    background-color: rgb(255, 82, 82);
+}
+
+#setting-close {
+    background-color: #c4c4c4;
 }
 
 #info-form-desc {
@@ -107,19 +149,22 @@ td {
     margin-bottom: 12px;
 }
 
-.info-form-item {
+.info-form-item,
+.setting-form-item {
     display: flex;
     flex-direction: column;
     margin-bottom: 8px;
 }
 
-.info-form-item > label {
+.info-form-item > label,
+.setting-form-item > label {
     font-size: 18px;
     margin-bottom: 4px;
     font-weight: 700;
 }
 
-.info-form-input {
+.info-form-input,
+.setting-form-input {
     border: none;
     outline: none;
     height: 50px;
@@ -133,13 +178,15 @@ input[type="radio"] {
     display: none;
 }
 
-.info-form-radios {
+.info-form-radios,
+.setting-form-radios {
     display: flex;
     border-radius: 10px;
     overflow: hidden;
 }
 
-.info-form-radios label {
+.info-form-radios label,
+.setting-form-radios label {
     color: white;
     font-weight: 700;
     font-size: 18px;
@@ -154,10 +201,12 @@ input[type="radio"] {
     opacity: 0.3;
 }
 
-input[id="car-true"]:checked ~ label[for="car-true"] {
+input[id="car-true"]:checked ~ label[for="car-true"],
+input[id="setting-car-true"]:checked ~ label[for="setting-car-true"] {
     opacity: 1;
 }
-input[id="car-false"]:checked ~ label[for="car-false"] {
+input[id="car-false"]:checked ~ label[for="car-false"],
+input[id="setting-car-false"]:checked ~ label[for="setting-car-false"] {
     opacity: 1;
 }
 
@@ -256,6 +305,14 @@ section {
     transform: translateX(-50%);
 }
 
+#excel {
+    background-color: #92ff63;
+}
+
+#print {
+    background-color: #00ffe4;
+}
+
 .util-btn {
     font-weight: 700;
     font-size: 18px;
@@ -267,7 +324,7 @@ section {
     height: 80px;
     cursor: pointer;
     position: relative;
-    background-color: antiquewhite;
+    background-color: rgb(196, 196, 196);
 }
 
 .util-btn:hover::after {
@@ -461,4 +518,17 @@ section {
 }
 .order-delete {
     background-image: url(./svg/delete.svg);
+}
+
+@media print {
+    header,
+    #controller,
+    #util-btns {
+        display: none !important;
+    }
+}
+
+@page {
+    size: landscape;
+    margin: 0.5cm 0.5cm;
 }

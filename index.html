@@ -6,10 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>여비 자동화</title>
         <link rel="stylesheet" href="styles.css" />
-        <script
-            lang="javascript"
-            src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"
-        ></script>
+        <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     </head>
     <body>
         <div id="info-modal" class="modal">
@@ -18,37 +15,20 @@
                 <p id="info-form-desc">아래의 사항을 입력해주세요</p>
                 <div class="info-form-item">
                     <label for="degree">직급</label>
-                    <input
-                        id="degree"
-                        class="info-form-input"
-                        placeholder="예)행정 8급"
-                    />
+                    <input id="degree" class="info-form-input" placeholder="예)행정 8급" />
                 </div>
                 <div class="info-form-item">
                     <label for="name">성명</label>
-                    <input
-                        id="name"
-                        class="info-form-input"
-                        placeholder="예)정기명"
-                    />
+                    <input id="name" class="info-form-input" placeholder="예)정기명" />
                 </div>
                 <div class="info-form-item">
                     <label for="team">팀명</label>
-                    <input
-                        id="team"
-                        class="info-form-input"
-                        placeholder="예)총무팀"
-                    />
+                    <input id="team" class="info-form-input" placeholder="예)총무팀" />
                 </div>
                 <div class="info-form-item">
                     <label>관용차량 존재 여부</label>
                     <div class="info-form-radios">
-                        <input
-                            type="radio"
-                            name="public-car"
-                            id="car-true"
-                            checked
-                        />
+                        <input type="radio" name="public-car" id="car-true" checked />
                         <input type="radio" name="public-car" id="car-false" />
                         <label for="car-true">있음</label>
                         <label for="car-false">없음</label>
@@ -57,6 +37,35 @@
                 <button id="info-submit">입력</button>
                 <p style="margin-top: 8px">입력하셔야만 이용이 가능합니다</p>
                 <p>또한 입력된 정보는 수집되지않습니다</p>
+            </div>
+        </div>
+        <div id="setting-modal" class="modal">
+            <div id="setting-form">
+                <p id="setting-form-title">환경설정</p>
+                <div class="setting-form-item">
+                    <label for="setting-degree">직급</label>
+                    <input id="setting-degree" class="setting-form-input" />
+                </div>
+                <div class="setting-form-item">
+                    <label for="setting-name">성명</label>
+                    <input id="setting-name" class="setting-form-input" />
+                </div>
+                <div class="setting-form-item">
+                    <label for="setting-team">팀명</label>
+                    <input id="setting-team" class="setting-form-input" />
+                </div>
+                <div class="setting-form-item">
+                    <label>관용차량 존재 여부</label>
+                    <div class="setting-form-radios">
+                        <input type="radio" name="setting-public-car" id="setting-car-true" />
+                        <input type="radio" name="setting-public-car" id="setting-car-false" />
+                        <label for="setting-car-true">있음</label>
+                        <label for="setting-car-false">없음</label>
+                    </div>
+                </div>
+                <button id="setting-submit">입력</button>
+                <button id="setting-reset">초기화</button>
+                <button id="setting-close">닫기</button>
             </div>
         </div>
 
@@ -86,9 +95,7 @@
                         <div id="person-degree" class="col-degree">직급</div>
                         <div id="person-bank" class="col-bank">은행</div>
                         <div id="person-account" class="col-account">계좌</div>
-                        <div id="person-workdate" class="col-workdate">
-                            출장일
-                        </div>
+                        <div id="person-workdate" class="col-workdate">출장일</div>
                         <div id="person-util" class="col-util">순서조정</div>
                     </div>
                     <div id="person-info-body"></div>
@@ -96,20 +103,12 @@
             </div>
         </section>
         <div id="util-btns">
-            <label class="util-btn" id="excel" for="excel-input"
-                >엑셀넣기</label
-            >
+            <label class="util-btn" id="excel" for="excel-input">엑셀넣기</label>
             <div class="util-btn" id="print">프린트</div>
             <div class="util-btn" id="prev">이전달</div>
             <div class="util-btn" id="next">다음달</div>
         </div>
-        <input
-            type="file"
-            id="excel-input"
-            multiple
-            style="display: none"
-            accept=".xls,.xlsx"
-        />
+        <input type="file" id="excel-input" multiple style="display: none" accept=".xls,.xlsx" />
         <script src="./index.js"></script>
     </body>
 </html>
