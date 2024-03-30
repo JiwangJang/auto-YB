@@ -194,8 +194,6 @@ function render() {
                     totalTrip++;
                 });
             });
-
-            console.log(up240, down240, up240AndUseCar);
             const up240AndUseCarMoney = up240AndUseCar.length * 10000;
             const up240Money = up240.length * 20000;
             const down240Money = down240.length * 10000;
