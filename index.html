@@ -12,7 +12,7 @@
     <body>
         <div id="info-modal" class="modal">
             <div id="info-form">
-                <p id="info-form-title">출장여비 내역서 자동화</p>
+                <p id="info-form-title" class="modal-title">출장여비 내역서 자동화</p>
                 <p id="info-form-desc">아래의 사항을 입력해주세요</p>
                 <div class="info-form-item">
                     <label for="degree">직급</label>
@@ -40,9 +40,21 @@
                 <p>또한 입력된 정보는 수집되지않습니다</p>
             </div>
         </div>
+        <div id="call-modal" class="modal">
+            <div id="call-form">
+                <p class="modal-title">만든이</p>
+                <p class="my-info">전라남도 여수시 문화산업국 에너지정책과 장지왕</p>
+                <div class="funny-img"></div>
+                <button id="call-close">닫기</button>
+                <p class="email-info">
+                    이용중 불편사항이 있으신 경우, <span id="email">jiwang917@korea.kr</span>로 메일주시면 성실히
+                    답해드리겠습니다.
+                </p>
+            </div>
+        </div>
         <div id="setting-modal" class="modal">
             <div id="setting-form">
-                <p id="setting-form-title">환경설정</p>
+                <p id="setting-form-title" class="modal-title">환경설정</p>
                 <div class="setting-form-item">
                     <label for="setting-degree">직급</label>
                     <input id="setting-degree" class="setting-form-input" />
@@ -76,12 +88,12 @@
                 </svg>
             </div>
         </div>
-
         <header>
             <div id="header-container">
                 <h1>출장여비 자동화</h1>
                 <nav id="header-buttons">
                     <span><a href="./manual/index.html" target="_blank">사용법</a></span>
+                    <span id="call-btn">만든이</span>
                     <span id="setting-btn">설정</span>
                 </nav>
             </div>

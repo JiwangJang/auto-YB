@@ -80,12 +80,14 @@ tbody.public-car tr:nth-child(3n) {
     z-index: 5;
 }
 
-#setting-modal {
+#setting-modal,
+#call-modal {
     background-color: rgba(0, 0, 0, 0.5);
     display: none;
 }
 
-#setting-modal.active {
+#setting-modal.active,
+#call-modal.active {
     display: flex;
 }
 
@@ -102,6 +104,22 @@ tbody.public-car tr:nth-child(3n) {
     align-items: center;
 }
 
+#call-form {
+    width: 400px;
+    background-color: white;
+    padding: 24px 24px;
+    border-radius: 10px;
+}
+
+.funny-img {
+    height: 200px;
+    background: url(./lol.jpg) no-repeat center;
+    background-size: cover;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    border: 1px solid black;
+}
+
 #info-form,
 #setting-form {
     min-width: 400px;
@@ -110,11 +128,27 @@ tbody.public-car tr:nth-child(3n) {
     border-radius: 10px;
 }
 
-#info-form-title,
-#setting-form-title {
+.modal-title {
     font-size: 36px;
     font-weight: 900;
     margin-bottom: 4px;
+}
+
+#email {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.my-info {
+    font-size: 18px;
+    letter-spacing: -0.06em;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.email-info {
+    margin-top: 4px;
+    letter-spacing: -0.03em;
 }
 
 #setting-submit,
@@ -282,10 +316,10 @@ section {
 
 #util-btns {
     position: fixed;
+    width: auto;
     bottom: 12px;
-    right: 12px;
+    right: 24px;
     display: flex;
-    justify-content: flex-end;
     gap: 8px;
 }
 

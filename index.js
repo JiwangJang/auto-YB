@@ -628,4 +628,14 @@ window.addEventListener("load", () => {
     document.querySelector("#loading").style.display = "none";
 });
 
+document.querySelector("#call-btn").addEventListener("click", () => {
+    document.querySelector("#call-modal").classList.add("active");
+});
+document.querySelector("#call-close").addEventListener("click", () => {
+    document.querySelector("#call-modal").classList.remove("active");
+});
+document.querySelector("#email").addEventListener("click", () => {
+    navigator.clipboard.writeText("jiwang917@korea.kr").then(() => alert("클립보드에 복사됐습니다"));
+});
+
 render();
