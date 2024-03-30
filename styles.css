@@ -1,23 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Pretendard;
-}
-
-@font-face {
-    font-family: Pretendard;
-    src: url(./fonts/Pretendard-Black.otf);
-    font-weight: 900;
-}
-@font-face {
-    font-family: Pretendard;
-    src: url(./fonts/Pretendard-Bold.otf);
-    font-weight: 700;
-}
-@font-face {
-    font-family: Pretendard;
-    src: url(./fonts/Pretendard-Regular.otf);
+a {
+    text-decoration: none;
+    color: black;
 }
 
 table {
@@ -37,7 +20,10 @@ tbody tr:first-child {
     border-top: 2px solid black;
 }
 
-tbody tr:nth-child(3n) {
+tbody.public-car tr:nth-child(3n) {
+    border-bottom: 2px solid black;
+}
+tbody tr:nth-child(2n) {
     border-bottom: 2px solid black;
 }
 
@@ -295,14 +281,11 @@ section {
 
 #util-btns {
     position: fixed;
-    width: 100%;
-    max-width: 1200px;
     bottom: 12px;
+    right: 12px;
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 #excel {

@@ -4,8 +4,64 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>사용법</title>
+        <link rel="stylesheet" href="../common.css" />
     </head>
+    <style>
+        #container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding-bottom: 32px;
+        }
+
+        img {
+            width: 100%;
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 44px;
+            font-weight: 900;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(213, 213, 213);
+            margin-bottom: 20px;
+        }
+
+        .desc {
+            font-size: 44px;
+            font-weight: 700;
+            padding-bottom: 8px;
+        }
+
+        .img-container:not(.img-container:first-child) {
+            margin-top: 24px;
+        }
+    </style>
     <body>
-        아직 작성중입니다.
+        <h1>관내출장여비 자동화웹 사용법</h1>
+        <div id="container">
+            <div class="img-container">
+                <p class="desc">- 첫화면</p>
+                <img src="./desc1.png" alt="" />
+            </div>
+            <div class="img-container">
+                <p class="desc">- 직원별 정보수정</p>
+                <img src="./desc2.png" alt="" />
+                <img src="./desc3.png" alt="" />
+            </div>
+            <div class="img-container">
+                <p class="desc">- 완성</p>
+                <img src="./desc4.png" alt="" />
+            </div>
+        </div>
+        <script>
+            window.addEventListener("load", () => {
+                window.opener.localStorage.setItem("manual-check", "true");
+            });
+        </script>
     </body>
 </html>

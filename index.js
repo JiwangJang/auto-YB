@@ -1,6 +1,13 @@
+function getUUID() {
+    return `${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}${Math.floor(
+        Math.random() * 9
+    )}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}`;
+}
+
 function ignore(e) {
     const target = e.target;
     const tripIndex = target.getAttribute("data-trip-index");
+    const tripId = target.getAttribute("data-trip-id");
     const date = Number(target.innerText);
     const name = target.parentElement.parentElement.getAttribute("data-name");
     const renderData = getRenderData();
@@ -102,6 +109,7 @@ function render() {
     const publicCar = JSON.parse(localStorage.getItem("public-car"));
     const personInfoBody = document.querySelector("#person-info-body");
 
+    publicCar ? tbody.classList.add("public-car") : tbody.classList.remove("public-car");
     document.querySelector("#document-title").innerText = `${localStorage.getItem("team")} 출장여비 내역서`;
 
     thead.innerHTML = `
@@ -138,6 +146,7 @@ function render() {
     let totalTrip = 0;
     let totalMoney = 0;
 
+    // 직원 순서에 따라서 렌더링
     order.forEach(({ worker, account, degree }) => {
         if (renderData.length === 0) {
             personInfoBody.innerHTML += `
@@ -163,9 +172,9 @@ function render() {
             const up240 = [];
             const down240 = [];
             const totalArr = [];
-
             target.forEach((data) => {
                 data.trip.forEach(({ isUp240, isUseCar, ignore }, index) => {
+                    if (!publicCar && isUseCar) return;
                     totalArr.push({
                         date: data.date,
                         tripIndex: index,
@@ -180,6 +189,7 @@ function render() {
                 });
             });
 
+            console.log(up240, down240, up240AndUseCar);
             const up240AndUseCarMoney = up240AndUseCar.length * 10000;
             const up240Money = up240.length * 20000;
             const down240Money = down240.length * 10000;
@@ -236,7 +246,9 @@ function render() {
                 <td class="trip-date-count">${down240.length === 0 ? "-" : down240.length}</td>
                 <td class="trip-price">10,000</td>
                 <td class="small-total">${down240.length === 0 ? "-" : commaGenerator(down240Money)}</td>
-                <td rowspan="2" class="account">${account.split(" ")[0]} <br/>${account.split(" ")[1]}</td>
+                <td rowspan="2" class="account">${
+                    account ? `${account.split(" ")[0]} <br/>${account.split(" ")[1]}` : ""
+                }</td>
                 <td rowspan="2" class="total-money">${commaGenerator(down240Money + up240Money)}</td>
             </tr>
             <tr>
@@ -250,12 +262,6 @@ function render() {
             </tr>
             `;
             tbody.innerHTML += result;
-
-            totalArr.sort((a, b) => {
-                if (a.date > b.date) return 1;
-                if (a.date == b.date) return 0;
-                if (a.date < b.date) return -1;
-            });
 
             personInfoBody.innerHTML += `
             <div class="person-info-item" data-name=${worker}>
@@ -300,51 +306,58 @@ function readExcel(file) {
             const workbook = XLSX.read(fileResult);
             const targetSheet = workbook.Sheets[workbook.SheetNames[0]];
             const json = XLSX.utils.sheet_to_json(targetSheet);
-            const result = {
-                tripData: [],
-            };
 
             if (json[0].__EMPTY_8.replace(/\s/g, "") !== "출장내역서") reject("formatError");
 
-            json.forEach((item, i) => {
-                if (item.__EMPTY_1 !== "관내") return;
-                if (i === 2) result.worker = item.__EMPTY_13;
-                const { __EMPTY_3: start, __EMPTY_4: end, __EMPTY_9: publicCar } = item;
-                const startDate = new Date(start);
-                if (startDate.getMonth() !== month || startDate.getFullYear() !== year) reject("notMatch");
+            const result = json.reduce(
+                (acc, item, i) => {
+                    if (item.__EMPTY_1 !== "관내") return acc;
+                    if (i === 2) acc.worker = item.__EMPTY_13;
+                    const { __EMPTY_3: start, __EMPTY_4: end, __EMPTY_9: publicCar } = item;
+                    const startDate = new Date(start);
+                    if (startDate.getMonth() !== month || startDate.getFullYear() !== year) reject("notMatch");
 
-                const period = new Date(end).getTime() - startDate.getTime();
-                const minutePeriod = period / (1000 * 60);
-                console.log(start, end, minutePeriod, publicCar);
-                if (publicCar === "사용" && minutePeriod < 240) return;
-                const prev = result.tripData[result.tripData.length - 1];
-
-                if (prev && prev.date === startDate.getDate()) {
+                    const period = new Date(end).getTime() - startDate.getTime();
+                    const minutePeriod = period / (1000 * 60);
+                    if (publicCar === "사용" && minutePeriod < 240) return acc;
+                    const redundant = acc.tripData.filter((item) => item.date === startDate.getDate())[0];
                     const isUp240 = minutePeriod >= 240 ? true : false;
                     const isUseCar = publicCar === "사용" ? true : false;
-                    if (prev.trip.length > 2 || (prev.trip[0].isUp240 && !prev.trip[0].isUseCar)) return;
-                    if (isUp240 && !isUseCar) {
-                        prev.trip = [
-                            {
+
+                    if (redundant) {
+                        if (redundant.trip.length > 2 || (redundant.trip[0].isUp240 && !redundant.trip[0].isUseCar))
+                            return acc;
+                        if (isUp240 && !isUseCar) {
+                            redundant.trip = [
+                                {
+                                    isUp240,
+                                    isUseCar,
+                                },
+                            ];
+                        } else {
+                            redundant.trip.push({
                                 isUp240,
                                 isUseCar,
-                            },
-                        ];
+                            });
+                        }
                     } else {
-                        prev.trip.push({ isUp240, isUseCar });
+                        acc.tripData.unshift({
+                            date: startDate.getDate(),
+                            trip: [
+                                {
+                                    isUp240,
+                                    isUseCar,
+                                },
+                            ],
+                        });
                     }
-                } else {
-                    result.tripData.push({
-                        date: startDate.getDate(),
-                        trip: [
-                            {
-                                isUp240: minutePeriod >= 240 ? true : false,
-                                isUseCar: publicCar === "사용" ? true : false,
-                            },
-                        ],
-                    });
+
+                    return acc;
+                },
+                {
+                    tripData: [],
                 }
-            });
+            );
             resolve(result);
         };
     });
@@ -366,6 +379,7 @@ if (!localStorage.getItem("year") || !localStorage.getItem("month")) {
     }
 }
 
+// 맨처음 정보입력 버튼
 document.querySelector("#info-submit").addEventListener("click", () => {
     const degree = document.querySelector("#degree").value;
     const name = document.querySelector("#name").value;
@@ -377,9 +391,11 @@ document.querySelector("#info-submit").addEventListener("click", () => {
     localStorage.setItem("team", team);
     localStorage.setItem("name", name);
     document.querySelector("#info-modal").style.display = "none";
+    if (!localStorage.getItem("manual-check")) window.open("./manual/index.html");
     render();
 });
 
+// 맨처음 정보입력 할때 UX개선을 위해 마지막에 엔터누르면 되게 하는거
 document.querySelector("#team").addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         const degree = document.querySelector("#degree").value;
@@ -392,10 +408,12 @@ document.querySelector("#team").addEventListener("keydown", (e) => {
         localStorage.setItem("team", team);
         localStorage.setItem("name", name);
         document.querySelector("#info-modal").style.display = "none";
+        if (!localStorage.getItem("manual-check")) window.open("./manual/index.html");
         render();
     }
 });
 
+// 엑셀을 json으로 파싱하고, 로컬스토리지에 저장
 document.querySelector("#excel-input").addEventListener("input", async (e) => {
     const promiseArr = [];
     [...e.target.files].forEach((file) => promiseArr.push(readExcel(file)));
@@ -485,11 +503,6 @@ document.querySelector("#person-info-revise-btn").addEventListener("click", (e) 
                     });
                 });
             });
-            totalArr.sort((a, b) => {
-                if (a.date > b.date) return 1;
-                if (a.date == b.date) return 0;
-                if (a.date < b.date) return -1;
-            });
 
             document.querySelector("#person-info-header .col-account").style.flex = 2;
             document.querySelector("#person-info-header .col-workdate").style.flex = 1;
@@ -506,7 +519,7 @@ document.querySelector("#person-info-revise-btn").addEventListener("click", (e) 
                     <div class="col-workdate" style="flex:1;">
                     ${totalArr
                         .map(
-                            ({ date, tripIndex, ignore }) =>
+                            ({ date, tripIndex, ignore, id }) =>
                                 `<div class="workdate revise ${
                                     ignore ? "ignore" : ""
                                 }" data-trip-index=${tripIndex}>${date}</div>`
@@ -525,6 +538,7 @@ document.querySelector("#person-info-revise-btn").addEventListener("click", (e) 
     }
 });
 
+// 이전달로 넘기는 버튼
 document.querySelector("#prev").addEventListener("click", () => {
     const year = Number(localStorage.getItem("year"));
     const month = Number(localStorage.getItem("month"));
@@ -538,6 +552,8 @@ document.querySelector("#prev").addEventListener("click", () => {
 
     render();
 });
+
+// 다음달로 넘기는 버튼
 document.querySelector("#next").addEventListener("click", () => {
     const year = Number(localStorage.getItem("year"));
     const month = Number(localStorage.getItem("month"));
@@ -551,8 +567,11 @@ document.querySelector("#next").addEventListener("click", () => {
 
     render();
 });
+
+// 프린트 버튼 클릭시 동작
 document.querySelector("#print").addEventListener("click", () => window.print());
 
+// 설정 모달 띄워 주는거
 document.querySelector("#setting-btn").addEventListener("click", () => {
     const settingModal = document.querySelector("#setting-modal");
     const name = localStorage.getItem("name");
@@ -569,6 +588,7 @@ document.querySelector("#setting-btn").addEventListener("click", () => {
     settingModal.classList.add("active");
 });
 
+// 설정다하고 설정완료 버튼 이벤트
 document.querySelector("#setting-form").addEventListener("click", (e) => {
     if (e.target.tagName !== "BUTTON") return;
 
