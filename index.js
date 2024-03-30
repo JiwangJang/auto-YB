@@ -109,7 +109,13 @@ function render() {
     const publicCar = JSON.parse(localStorage.getItem("public-car"));
     const personInfoBody = document.querySelector("#person-info-body");
 
-    publicCar ? tbody.classList.add("public-car") : tbody.classList.remove("public-car");
+    if (publicCar) {
+        tbody.classList.add("public-car");
+        tbody.classList.remove("no-public-car");
+    } else {
+        tbody.classList.remove("public-car");
+        tbody.classList.add("no-public-car");
+    }
     document.querySelector("#document-title").innerText = `${localStorage.getItem("team")} 출장여비 내역서`;
 
     thead.innerHTML = `
