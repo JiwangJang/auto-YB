@@ -11,6 +11,8 @@
         <meta name="description" content="관내출장여비를 수기로 작성하시고 계세요? 그렇다면 이 프로그램을 써보세요!" />
         <meta name="keywords" content="관내출장여비 자동화, 출장여비, 관내출장, 공무원, 업무자동화" />
         <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
     </head>
     <body>
         <div id="info-modal" class="modal">
@@ -133,6 +135,38 @@
             <div class="util-btn" id="next">다음달</div>
         </div>
         <input type="file" id="excel-input" multiple style="display: none" accept=".xls,.xlsx" />
+        <script type="module">
+            const date = new Date();
+            const checkDate = localStorage.getItem("checkDate");
+            if (checkDate == date.getDate()) return;
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyDVae7rl6EJCNX2Rzr07cY9AktcTMPd9Zo",
+                authDomain: "water-facility.firebaseapp.com",
+                projectId: "water-facility",
+                storageBucket: "water-facility.appspot.com",
+                messagingSenderId: "226407718816",
+                appId: "1:226407718816:web:4921c79fe6e2900c768ec5",
+                measurementId: "G-R41KDFLL0W",
+            };
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            const todayDb = db
+                .collection("auto-yb")
+                .doc(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
+            async function log() {
+                const doc = await todayDb.get();
+                const result = doc.data();
+                if (!result) {
+                    todayDb.set({ visit: 1 });
+                } else {
+                    const prevVisit = result.visit;
+                    todayDb.update({ visit: prevVisit + 1 });
+                }
+                localStorage.setItem("checkDate", date.getDate());
+            }
+            log();
+        </script>
         <script src="./index.js"></script>
     </body>
 </html>
