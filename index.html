@@ -138,7 +138,7 @@
         <script type="module">
             const date = new Date();
             const checkDate = localStorage.getItem("checkDate");
-            if (!checkDate == date.getDate()) {
+            if (!(checkDate == date.getDate())) {
                 const firebaseConfig = {
                     apiKey: "AIzaSyDVae7rl6EJCNX2Rzr07cY9AktcTMPd9Zo",
                     authDomain: "water-facility.firebaseapp.com",
